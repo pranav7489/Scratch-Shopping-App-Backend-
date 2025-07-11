@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= user.fullname %> | Scratch – Profile</title>
+
+  <!-- Tailwind (CDN for dev; swap for compiled CSS in prod) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+  <!-- container -->
+  <main class="max-w-md mx-auto mt-16">
+    <section class="bg-white rounded-2xl shadow-lg p-8">
+
+      <!-- avatar & name -->
+      <div class="flex flex-col items-center text-center">
+        <img
+          src="<%= user.picture || '/images/default.png' %>"
+          alt="Profile picture"
+          class="w-40 h-40 rounded-full object-cover ring-4 ring-white shadow"
+        />
+
+        <h1 class="mt-4 text-2xl font-semibold text-gray-900 tracking-tight">
+          <%= user.fullname %>
+        </h1>
+
+        <p class="text-gray-500"><%= user.email %></p>
+
+        <% if (user.contact) { %>
+          <p class="text-gray-500">+<%= user.contact %></p>
+        <% } %>
+      </div>
+
+      <!-- divider -->
+      <hr class="my-6 border-gray-200">
+
+      <!-- simple stats -->
+      <div class="grid grid-cols-2 gap-4 text-center">
+        <div>
+          <span class="block text-sm uppercase text-gray-400">Cart Items</span>
+          <span class="font-medium text-gray-900"><%= user.cart?.length || 0 %></span>
+        </div>
+        <div>
+          <span class="block text-sm uppercase text-gray-400">Orders</span>
+          <span class="font-medium text-gray-900"><%= user.orders?.length || 0 %></span>
+        </div>
+      </div>
+
+      <!-- buttons -->
+      <div class="mt-8 flex flex-col gap-3">
+        <a
+          href="/profile/edit"
+          class="inline-flex justify-center rounded-lg bg-indigo-600 py-2 font-medium text-white transition hover:bg-indigo-700"
+        >
+          Edit Profile
+        </a>
+
+        <a
+          href="/logout"
+          class="inline-flex justify-center rounded-lg border border-gray-300 py-2 font-medium text-gray-700 transition hover:bg-gray-50"
+        >
+          LogOut
+        </a>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

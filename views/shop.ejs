@@ -1,0 +1,69 @@
+<%- include('./partials/header') %>
+
+<% if (typeof success !== 'undefined' && success.length > 0) { %>
+  <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
+    <span class="inline-block mt-1 mb-1 text-white"><%= success %></span>
+  </div>
+<% } %>
+
+<div class="w-full min-h-screen flex items-start px-20 py-20">
+  <!-- Sidebar -->
+  <div class="w-[25%] flex flex-col items-start">
+    <!-- Sort Dropdown -->
+    <div class="flex items-center gap-2">
+      <h3 class="font-semibold">Sort by:</h3>
+      <form action="/shop" method="GET">
+        <% if (filter !== 'all') { %>
+          <input type="hidden" name="filter" value="<%= filter %>">
+        <% } %>
+        <select class="border px-2 py-1" name="sortby" onchange="this.form.submit()">
+          <option value="popular"     <%= sortby === 'popular' ? 'selected' : '' %>>Popular</option>
+          <option value="newest"      <%= sortby === 'newest' ? 'selected' : '' %>>Newest</option>
+          <option value="price-asc"   <%= sortby === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+          <option value="price-desc"  <%= sortby === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+        </select>
+      </form>
+    </div>
+
+    <!-- Filter Links -->
+    <div class="flex flex-col mt-10">
+      <h3 class="font-semibold mb-2">Filter by:</h3>
+        <!-- Available -->
+  <a
+    class="mb-1 <%= filter === 'available' ? 'font-bold underline' : '' %>"
+    href="/shop?filter=available&sortby=<%= sortby %>"
+  >
+    Available
+  </a>
+      <a class="mb-1 <%= filter === 'discounted' ? 'font-bold underline' : '' %>" href="/shop?filter=discounted&sortby=<%= sortby %>">Discounted</a>
+       <a class="mb-1 <%= (!filter || filter === 'all') ? 'font-bold underline' : '' %>" href="/shop?filter=all&sortby=<%= sortby %>">All Products</a>
+   
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="w-[75%] flex flex-wrap gap-6 justify-start">
+    <% if (products.length === 0) { %>
+      <p class="text-gray-500 text-lg">No products found.</p>
+    <% } %>
+    
+    <% products.forEach(function(product) { %>
+      <div class="w-60 shadow-md rounded-md overflow-hidden">
+        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+          <img class="h-[12rem]" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+        </div>
+        <div class="flex justify-between bg-[<%= product.panelcolor %>] items-center px-4 py-4 text-[<%= product.textcolor %>]">
+          <div>
+            <h3 class="font-semibold"><%= product.name %></h3>
+            <h4>₹ <%= product.price %></h4>
+          </div>
+          <a class="w-7 h-7 flex items-center justify-center rounded-full bg-white" href="/addtocart/<%= product._id %>">
+            <i class="ri-add-line"></i>
+          </a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>
